@@ -1,5 +1,5 @@
 from HR8825zero import HR8825zero
-
+""" Gantry movement class based on distance"""
 class Gantry():
     def __init__(self, Motor1, Motor2):
         self.Motor1 = Motor1
