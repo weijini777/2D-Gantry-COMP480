@@ -1,5 +1,6 @@
 import HR8825zero
 import Coordinate
+import time
 
 class Gantry1():
     """
@@ -38,6 +39,7 @@ class Gantry1():
         motorSteps = self.Coordinate.move(start, end)
         # Motor1 is going to handle motorSteps[0] and Motor2 is going to handle motorSteps[1]
         motorRatio = abs(motorSteps[0]) /abs(motorSteps[1])
+        
         # if motorRatio > 1, meaning motor1 is traveling longer, its step delay will be shorter than Motor2
         if motorRatio >= 1:
             self.Motor1.setStepDelay(0.001)
@@ -58,9 +60,26 @@ class Gantry1():
             self.Motor2.start('forward')
         
         # find out how to have them running at different speeds
+        # control the delay time i guess 
+        
+        # # boolean for motor ratio
+        # motor1MoreSteps = motorRatio >= 1
+        
+        # # motor2 has a longer step delay
+        # if motor1MoreSteps:
+        #     while self.Motor1.stepCount < motorSteps[0]:
+        #         runTime = time.time()
+        #         # we are not ready to run the slower and longer step
+        #         # step the shorter and faster one
+        #         if runTime - self.Motor2.currTime < self.Motor2.stepDelay * 2:
+        #             self.Motor1.control()
+        #         else:
+        #             self.Motor2.control()
+            
         while self.Motor1.stepCount < motorSteps[0]:
             self.Motor1.control()
             self.Motor2.control()
+                
     
     # stops all the motors
     def stop(self):
