@@ -76,7 +76,7 @@ class Gantry1():
         #         else:
         #             self.Motor2.control()
             
-        while self.Motor1.stepCount < motorSteps[0]:
+        while self.Motor1.stepCount < abs(motorSteps[0]):
             self.Motor1.control()
             self.Motor2.control()
                 
