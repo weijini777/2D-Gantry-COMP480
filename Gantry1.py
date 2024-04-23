@@ -1,7 +1,7 @@
 from HR8825zero import HR8825zero
 from Coordinate import Coordinate
 import time
-from threading import Thread
+from multiprocessing import Process
 
 class Gantry1():
     """
@@ -52,13 +52,13 @@ class Gantry1():
         
         # figure out if we are moving the motor forward or backwards
         if motorSteps[0] < 0:
-            self.Motor1.start('backward')
-        else:
             self.Motor1.start('forward')
-        if motorSteps[1] < 0:
-            self.Motor2.start('backward')
         else:
+            self.Motor1.start('backward')
+        if motorSteps[1] < 0:
             self.Motor2.start('forward')
+        else:
+            self.Motor2.start('backward')
         
         # -------------------------------------------------------------------
         # METHOD 1, the problem is that it is still giving very rough motion
@@ -75,14 +75,11 @@ class Gantry1():
         #             self.Motor2.control()
         
         # - - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - 
-        # METHOD 2, where we pulse each motor one at a time, NOT SIMULTANEOUSLY
-        while self.Motor1.stepCount < abs(motorSteps[0]):
-            self.Motor1.control()
-            self.Motor2.control()
         # ----------------------------------------------------------------------
         # METHOD 3: Multithreading
-        x = Thread(target = self.Motor1.control(motorSteps[0]))
-        y = Thread(target = self.Motor2.control(motorSteps[1]))
+        motorSteps = [abs(i) for i in motorSteps]
+        x = Process(target = self.Motor1.control, args=(motorSteps[0],))
+        y = Process(target = self.Motor2.control, args=(motorSteps[1],))
         
         x.start()
         y.start()

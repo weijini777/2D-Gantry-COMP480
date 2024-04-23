@@ -14,10 +14,6 @@ class HR8825zero():
         self.enableDevice = GPIO.OutputDevice(pin = enable_pin)
         # keeps track of the steps
         self.stepCount = 0
-        self.pulseCount = 0
-        self.currTime = time.time()
-        # start it so that the loop will work
-        self.deltaTime = time.time()
         self.stepDelay = 0.001
 
 
@@ -44,18 +40,9 @@ class HR8825zero():
     # controls the movement of the motors
     def control(self, steps):
         while self.stepCount < steps:
-            self.currTime = time.time()
-            # time to pulse
-            if ((self.currTime - self.deltaTime) > self.stepDelay):
-                self.pulseCount = self.pulseCount + 1
-                # alternate so that it moves the motor
-                if(self.pulseCount % 2 == 0):
-                    self.stepCount = self.stepCount + 1
-                    self.stepDevice.value = True
-                else:
-                    self.stepDevice.value = False
-                # update the time
-                self.deltaTime = self.currTime
+            self.stepDevice.value = True
+            time.sleep(self.stepDelay)
+            self.stepDevice.value = False
     
     # changes the step delay of our machine to change the speed
     def setStepDelay(self, stepDelay):
