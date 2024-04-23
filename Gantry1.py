@@ -1,6 +1,7 @@
-import HR8825zero
-import Coordinate
+from HR8825zero import HR8825zero
+from Coordinate import Coordinate
 import time
+from threading import Thread
 
 class Gantry1():
     """
@@ -37,10 +38,10 @@ class Gantry1():
             end ([x2,y2]) : the ending location
         """
         motorSteps = self.Coordinate.move(start, end)
-        # Motor1 is going to handle motorSteps[0] and Motor2 is going to handle motorSteps[1]
+        # motor 1 steps / motor 2 steps
         motorRatio = abs(motorSteps[0]) /abs(motorSteps[1])
         
-        # if motorRatio > 1, meaning motor1 is traveling longer, its step delay will be shorter than Motor2
+        # if motorRatio > 1, meaning motor1 is pulsing more in the same amount of time, its step delay will be shorter than Motor2
         if motorRatio >= 1:
             self.Motor1.setStepDelay(0.001)
             self.Motor2.setStepDelay(0.001 * motorRatio)
@@ -59,13 +60,10 @@ class Gantry1():
         else:
             self.Motor2.start('forward')
         
-        # find out how to have them running at different speeds
-        # control the delay time i guess 
-        
-        # # boolean for motor ratio
+        # -------------------------------------------------------------------
+        # METHOD 1, the problem is that it is still giving very rough motion
         # motor1MoreSteps = motorRatio >= 1
         
-        # # motor2 has a longer step delay
         # if motor1MoreSteps:
         #     while self.Motor1.stepCount < motorSteps[0]:
         #         runTime = time.time()
@@ -75,10 +73,24 @@ class Gantry1():
         #             self.Motor1.control()
         #         else:
         #             self.Motor2.control()
-            
+        
+        # - - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - 
+        # METHOD 2, where we pulse each motor one at a time, NOT SIMULTANEOUSLY
         while self.Motor1.stepCount < abs(motorSteps[0]):
             self.Motor1.control()
             self.Motor2.control()
+        # ----------------------------------------------------------------------
+        # METHOD 3: Multithreading
+        x = Thread(target = self.Motor1.control(motorSteps[0]))
+        y = Thread(target = self.Motor2.control(motorSteps[1]))
+        
+        x.start()
+        y.start()
+        
+        x.join()
+        y.join()
+        
+        
                 
     
     # stops all the motors

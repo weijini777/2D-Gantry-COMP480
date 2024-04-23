@@ -42,19 +42,20 @@ class HR8825zero():
             return
     
     # controls the movement of the motors
-    def control(self):
-        self.currTime = time.time()
-        # time to pulse
-        if ((self.currTime - self.deltaTime) > self.stepDelay):
-            self.pulseCount = self.pulseCount + 1
-            # alternate so that it moves the motor
-            if(self.pulseCount % 2 == 0):
-                self.stepCount = self.stepCount + 1
-                self.stepDevice.value = True
-            else:
-                self.stepDevice.value = False
-            # update the time
-            self.deltaTime = self.currTime
+    def control(self, steps):
+        while self.stepCount < steps:
+            self.currTime = time.time()
+            # time to pulse
+            if ((self.currTime - self.deltaTime) > self.stepDelay):
+                self.pulseCount = self.pulseCount + 1
+                # alternate so that it moves the motor
+                if(self.pulseCount % 2 == 0):
+                    self.stepCount = self.stepCount + 1
+                    self.stepDevice.value = True
+                else:
+                    self.stepDevice.value = False
+                # update the time
+                self.deltaTime = self.currTime
     
     # changes the step delay of our machine to change the speed
     def setStepDelay(self, stepDelay):
