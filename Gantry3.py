@@ -39,7 +39,7 @@ class Gantry3():
             end ([x2,y2]) : the ending location
         """
 
-        motorSteps = self.Coordinate(start, end)
+        motorSteps = self.Coordinate.move(start, end)
         # it is not perfectly straight or diagonal
         # manually fix it
         if (abs(motorSteps[0]) - abs(motorSteps[1])) > (0.2 * self.Coordinate.getSize()):
