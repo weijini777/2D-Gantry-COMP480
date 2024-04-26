@@ -108,7 +108,7 @@ class Gantry3():
                     self.Motor2.start('backward')
                 # down
                 else:
-                    self.Motor2.start('foward')
+                    self.Motor2.start('forward')
                 self.Motor1.start('backward')
             # moving left and up
             else:
