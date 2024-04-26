@@ -9,12 +9,12 @@ Motor2 = HR8825zero(dir_pin=24, step_pin=18, enable_pin=4)
 coord = Coordinate(150)
 Gantry = Gantry3(Motor1, Motor2, coord)
 # test out the gantry class
-center = [100,100]
-forward = [100,120]
+center = [104,100]
+forward = [101,120]
 backward = [100,80]
-left = [80, 100]
+left = [81, 100]
 right = [100, 120]
-diag = [110, 110]
+diag = [111, 110]
 
 Gantry.travel(center, diag)
 Gantry.stop()
