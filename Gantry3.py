@@ -40,9 +40,10 @@ class Gantry3():
         """
 
         motorSteps = self.Coordinate.move(start, end)
+        print("before correction: ", motorSteps)
         # it is not perfectly straight or diagonal
         # manually fix it
-        if (abs(motorSteps[0]) - abs(motorSteps[1])) > (0.2 * self.Coordinate.getSize()):
+        if (abs(motorSteps[0]) - abs(motorSteps[1])) > (0.0025 * self.Coordinate.getSize()):
             if abs(motorSteps[0])< abs(motorSteps[1]):
                 motorSteps[0] = 0
             else:
