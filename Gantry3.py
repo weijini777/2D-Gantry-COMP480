@@ -3,7 +3,7 @@ from Coordinate import Coordinate
 import time
 from multiprocessing import Process
 
-class Gantry1():
+class Gantry3():
     """
     This class utlizes coordinate based movement
     works in tandem with the Coordinate class
@@ -28,6 +28,7 @@ class Gantry1():
         self.Motor1 = Motor1
         self.Motor2 = Motor2
         self.Coordinate = Coordinate
+        
 
     def travel(self, start, end) -> None:
         """
@@ -38,27 +39,60 @@ class Gantry1():
             end ([x2,y2]) : the ending location
         """
         motorSteps = self.Coordinate.move(start, end)
-        # motor 1 steps / motor 2 steps
-        motorRatio = abs(motorSteps[0]) /abs(motorSteps[1])
         
-        # if motorRatio > 1, meaning motor1 is pulsing more in the same amount of time, its step delay will be shorter than Motor2
-        if motorRatio >= 1:
+        # hard code the different directions to force only 5 types of movement
+        
+        # it is not perfectly straight or diagonal
+        # manually fix it
+        if (motorSteps[0] - motorSteps[1]) > 0.1 * Coordinate.getSize():
+            if (motorSteps[0]< motorSteps[1]):
+                motorSteps[0] = 0
+            else:
+                motorSteps[1] = 0
+        
+        # figure out what direction to have the motors go
+        
+        # left motor is not moving
+        if (motorSteps[0] == 0):
+            # if the right motor value is positive
+            if motorSteps[1] > 0:
+                self.Motor2.start('forward')
+            else:
+                self.Motor2.start('backward')
+            # turn the motor
+            self.Motor2.setStepDelay(0.0005)
+            self.Motor2.control(motorSteps[1])
+        # right motor is not moving
+        elif motorSteps[1] == 0:
+            
+            if motorSteps[0] > 0:
+                self.Motor1.start('forward')
+            else:
+                self.Motor2.start('backward')
+            self.Motor2.setStepDelay(0.0005)
+            self.Motor1.control(motorSteps[0])
+        # both motors are moving and the values are the same
+        else:
+            # left motor moving forward
+            if(motorSteps[0] > 0):
+                # right motor moving forward
+                if motorSteps[1] > 0:
+                    self.Motor2.start('forward')
+                else:
+                    self.Motor2.start('backward')
+                self.Motor1.start('forward')
+            # left motor is moving backward
+            else:
+                if motorSteps[0] > 0:
+                    self.Motor2.start('forward')
+                else:
+                    self.Motor2.start('backward')
+                self.Motor1.start('backward')
+            # set step delay
             self.Motor1.setStepDelay(0.001)
-            self.Motor2.setStepDelay(0.001 * motorRatio)
-        # motorRatio < 1
-        else:
-            self.Motor1.setStepDelay(0.001 / motorRatio)
             self.Motor2.setStepDelay(0.001)
-        
-        # figure out if we are moving the motor forward or backwards
-        if motorSteps[0] < 0:
-            self.Motor1.start('forward')
-        else:
-            self.Motor1.start('backward')
-        if motorSteps[1] < 0:
-            self.Motor2.start('forward')
-        else:
-            self.Motor2.start('backward')
+            self.Motor1.control(motorSteps[0])
+            self.Motor2.control(motorSteps[1])
         
         # -------------------------------------------------------------------
         # METHOD 1, the problem is that it is still giving very rough motion
@@ -76,20 +110,8 @@ class Gantry1():
         
         # - - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - 
         # ----------------------------------------------------------------------
-        # METHOD 3: Multithreading
-        motorSteps = [abs(i) for i in motorSteps]
-        x = Process(target = self.Motor1.control, args=(motorSteps[0],))
-        y = Process(target = self.Motor2.control, args=(motorSteps[1],))
-        
-        x.start()
-        y.start()
-        
-        x.join()
-        y.join()
-        
-        
-                
-    
+
+
     # stops all the motors
     def stop(self):
         self.Motor1.stop()
