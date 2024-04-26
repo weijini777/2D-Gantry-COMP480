@@ -97,24 +97,29 @@ class Gantry3():
             self.Motor1.control(abs(motorSteps[0]))
             self.Motor1.stop()
         # both motors are moving and the values are the same
-        # figure out the directions and get them started
+        # figure out the directions and get them started\
+        # counterclockwise = forward
+        # clockwise = backward
         else:
             print("Both motors are moving")
-            # left motor moving forward
+            # moving right and down
             if motorSteps[0] > 0:
-                # right motor moving 
+                # right 
                 if motorSteps[1] > 0:
-                    self.Motor2.start('forward')
-                else:
                     self.Motor2.start('backward')
-                self.Motor1.start('forward')
-            # left motor is moving backward
-            else:
-                if motorSteps[1] > 0:
-                    self.Motor2.start('forward')
+                # down
                 else:
-                    self.Motor2.start('backward')
+                    self.Motor2.start('foward')
                 self.Motor1.start('backward')
+            # moving left and up
+            else:
+                # left
+                if motorSteps[1] > 0:
+                    self.Motor2.start('backward')
+                # up
+                else:
+                    self.Motor2.start('forward')
+                self.Motor1.start('forward')
             # set step delay
             self.Motor1.setStepDelay(0.001)
             self.Motor2.setStepDelay(0.001)
