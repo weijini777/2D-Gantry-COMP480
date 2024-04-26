@@ -108,9 +108,9 @@ class Gantry3():
             x.join()
             y.join()
             
-            
-            Motor1.stop()
-            Motor2.stop()
+            print("does it get here")
+            self.Motor1.stop()
+            self.Motor2.stop()
         # -------------------------------------------------------------------
         # METHOD 1, the problem is that it is still giving very rough motion
         # motor1MoreSteps = motorRatio >= 1

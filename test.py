@@ -19,6 +19,8 @@ Gantry.travel(center, forward)
 Gantry.stop()
 time.sleep(1)
 
+print("Does it make it past the first chain of tests")
+
 Gantry.travel(center, backward)
 Gantry.stop()
 time.sleep(1)
