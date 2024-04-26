@@ -102,7 +102,7 @@ class Gantry3():
             print("Both motors are moving")
             # left motor moving forward
             if motorSteps[0] > 0:
-                # right motor moving forward
+                # right motor moving 
                 if motorSteps[1] > 0:
                     self.Motor2.start('forward')
                 else:
