@@ -39,16 +39,10 @@ class Gantry3():
             end ([x2,y2]) : the ending location
         """
         
-        # make the corrections to the dimensions here
-        diff = (end - start)
-        print(diff)        
-        motorSteps = self.Coordinate.move(start, end)
-        print("Before correction: ", motorSteps)
-        # hard code the different directions to force only 5 types of movement
-        
+    
         # it is not perfectly straight or diagonal
         # manually fix it
-        if abs(motorSteps[0] - motorSteps[1]) > (0.5 * self.Coordinate.getSize()):
+        if (abs(motorSteps[0]) - abs(motorSteps[1])) > (0.2 * self.Coordinate.getSize()):
             if abs(motorSteps[0])< abs(motorSteps[1]):
                 motorSteps[0] = 0
             else:
