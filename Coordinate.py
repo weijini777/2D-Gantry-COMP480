@@ -28,7 +28,7 @@ class Coordinate:
         constructs our coordinate system and all of its necesarry attributes
         """
         self.size = size
-        self.length = 500
+        self.length = 1000
         self.stepSize = "half-step"
     
     def getSize(self) -> int:
