@@ -40,7 +40,6 @@ class Gantry3():
         """
 
         motorSteps = self.Coordinate.move(start, end)
-        print("before correction: ", motorSteps)
         
         threshold = 0.05 * self.Coordinate.getSize()
         # check if one of the values are close to 0 

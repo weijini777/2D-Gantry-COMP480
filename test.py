@@ -11,7 +11,7 @@ Gantry = Gantry3(Motor1, Motor2, coord)
 # test out the gantry class
 center = [100, 100]
 forward = [100,299]
-backward = [100,1]
+backward = [100,2]
 left = [1, 100]
 right = [200, 99]
 lu = [50, 150]
