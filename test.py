@@ -15,9 +15,25 @@ backward = [254,200]
 left = [180, 250]
 right = [320, 253]
 diag = [297, 298]
+diag1 = [200, 198]
+diag2 = [275, 225]
+diag3 = [225, 276]
 
 Gantry.travel(center, diag)
 Gantry.stop()
+time.sleep(0.5)
+
+Gantry.travel(center, diag1)
+Gantry.stop()
+time.sleep(0.5)
+
+Gantry.travel(center, diag2)
+Gantry.stop()
+time.sleep(0.5)
+
+Gantry.travel(center, diag3)
+Gantry.stop()
+time.sleep(0.5)
 
 Gantry.travel(center, forward)
 Gantry.stop()
