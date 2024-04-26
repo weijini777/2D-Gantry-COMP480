@@ -108,6 +108,8 @@ class Gantry3():
         
             x.start()
             y.start()
+            
+            print("are the processes started?")
         
             x.join()
             y.join()

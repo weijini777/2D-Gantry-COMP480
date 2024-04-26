@@ -14,6 +14,11 @@ forward = [100,150]
 backward = [100,50]
 left = [50, 100]
 right = [100, 150]
+diag = [125, 125]
+
+Gantry.travel(center, diag)
+Gantry.stop()
+time.sleep(1)
 
 Gantry.travel(center, forward)
 Gantry.stop()
