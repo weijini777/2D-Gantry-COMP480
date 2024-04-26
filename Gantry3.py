@@ -39,19 +39,19 @@ class Gantry3():
             end ([x2,y2]) : the ending location
         """
         motorSteps = self.Coordinate.move(start, end)
-        
+        print("Before correction: ", motorSteps)
         # hard code the different directions to force only 5 types of movement
         
         # it is not perfectly straight or diagonal
         # manually fix it
-        if abs(motorSteps[0] - motorSteps[1]) > 0.1 * self.Coordinate.getSize():
-            if (abs(motorSteps[0])< abs(motorSteps[1])):
+        if abs(motorSteps[0] - motorSteps[1]) > (0.5 * self.Coordinate.getSize()):
+            if abs(motorSteps[0])< abs(motorSteps[1]):
                 motorSteps[0] = 0
             else:
                 motorSteps[1] = 0
         
         # figure out what direction to have the motors go
-        print(motorSteps)
+        print("After correction: ", motorSteps)
         # left motor is not moving
         if (motorSteps[0] == 0):
             # if the right motor value is positive
@@ -116,3 +116,13 @@ class Gantry3():
     def stop(self):
         self.Motor1.stop()
         self.Motor2.stop()
+        
+if __name__ == "__main__":
+    coord = Coordinate(500)
+    center = [50, 50]
+    forward = [50, 100]
+    Motor1 = HR8825zero(dir_pin=13, step_pin=19, enable_pin=12)
+    Motor2 = HR8825zero(dir_pin=24, step_pin=18, enable_pin=4)
+    Gantry = Gantry3(Motor1, Motor2, coord)
+    Gantry.travel(center, forward)
+    
