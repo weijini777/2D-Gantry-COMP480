@@ -77,12 +77,12 @@ class Gantry3():
             print("Only the left motor is moving")
             # if the right motor value is positive
             if motorSteps[1] > 0:
-                self.Motor2.start('forward')
-            else:
                 self.Motor2.start('backward')
+            else:
+                self.Motor2.start('forward')
             # turn the motor
             self.Motor2.setStepDelay(0.0005)
-            self.Motor2.control(motorSteps[1])
+            self.Motor2.control(abs(motorSteps[1]))
             # make sure to stop it after it is done running
             self.Motor2.stop()
             
@@ -90,11 +90,11 @@ class Gantry3():
         elif motorSteps[1] == 0:
             print("Only the right motor is moving")
             if motorSteps[0] > 0:
-                self.Motor1.start('forward')
+                self.Motor1.start('backward')
             else:
-                self.Motor2.start('backward')
-            self.Motor2.setStepDelay(0.0005)
-            self.Motor1.control(motorSteps[0])
+                self.Motor1.start('forward')
+            self.Motor1.setStepDelay(0.0005)
+            self.Motor1.control(abs(motorSteps[0]))
             self.Motor1.stop()
         # both motors are moving and the values are the same
         # figure out the directions and get them started
