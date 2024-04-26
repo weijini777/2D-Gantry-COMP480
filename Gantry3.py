@@ -41,15 +41,35 @@ class Gantry3():
 
         motorSteps = self.Coordinate.move(start, end)
         print("before correction: ", motorSteps)
-        # it is not perfectly straight or diagonal
-        # manually fix it
-        if (abs(motorSteps[0]) - abs(motorSteps[1])) > (0.0025 * self.Coordinate.getSize()):
-            if abs(motorSteps[0])< abs(motorSteps[1]):
-                motorSteps[0] = 0
-            else:
-                motorSteps[1] = 0
         
-        # figure out what direction to have the motors go
+        threshold = 0.05 * self.Coordinate.getSize()
+        # check if one of the values are close to 0 
+        # if first value is close enough to 0
+        if abs(motorSteps[0]-0) < threshold:
+            motorSteps[0] = 0
+            # second value is close enough to 0
+        elif abs(motorSteps[1]-0) < threshold:
+            motorSteps[1] = 0
+        # if they are not the same
+        if abs(motorSteps[0]) != abs(motorSteps[1]):
+            # they have the same sign
+            if (motorSteps[0] * motorSteps[1]) > 0:
+                average = sum(motorSteps)//2
+                motorSteps[0] = average
+                motorSteps[1] = average
+            # they have different signs
+            if (motorSteps[0] * motorSteps[1]) < 0:
+                # if the first one if negative
+                if motorSteps[0] < 0:
+                    average = (-1 * motorSteps[0]+motorSteps[1])//2
+                    motorSteps[0] = -1 * average
+                    motorSteps[1] = average
+                # second one has to be negative
+                else:
+                    average = (motorSteps[0]+ -1*motorSteps[1])//2
+                    motorSteps[0] = average
+                    motorSteps[1] = -1 * average
+    
         print("After correction: ", motorSteps)
         
         # left motor is not moving

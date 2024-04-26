@@ -6,15 +6,15 @@ from Coordinate import Coordinate
 
 Motor1 = HR8825zero(dir_pin=13, step_pin=19, enable_pin=12)
 Motor2 = HR8825zero(dir_pin=24, step_pin=18, enable_pin=4)
-coord = Coordinate(150)
+coord = Coordinate(500)
 Gantry = Gantry3(Motor1, Motor2, coord)
 # test out the gantry class
-center = [104,100]
-forward = [101,120]
-backward = [100,80]
-left = [81, 100]
-right = [100, 120]
-diag = [111, 110]
+center = [250, 250]
+forward = [249,300]
+backward = [254,200]
+left = [180, 250]
+right = [320, 253]
+diag = [297, 298]
 
 Gantry.travel(center, diag)
 Gantry.stop()
