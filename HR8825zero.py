@@ -21,7 +21,6 @@ class HR8825zero():
         # when enable device is high, it disables the motor
         self.enableDevice.off()
         # reset the counts
-        self.pulseCount = 0
         self.stepCount = 0
     
         

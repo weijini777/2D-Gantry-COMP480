@@ -10,15 +10,14 @@ coord = Coordinate(500)
 Gantry = Gantry3(Motor1, Motor2, coord)
 # test out the gantry class
 center = [100,100]
-forward = [100,150]
-backward = [100,50]
-left = [50, 100]
-right = [100, 150]
-diag = [125, 125]
+forward = [100,120]
+backward = [100,80]
+left = [80, 100]
+right = [100, 120]
+diag = [110, 110]
 
 Gantry.travel(center, diag)
 Gantry.stop()
-time.sleep(1)
 
 Gantry.travel(center, forward)
 Gantry.stop()
