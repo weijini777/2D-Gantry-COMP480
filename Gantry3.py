@@ -44,14 +44,14 @@ class Gantry3():
         
         # it is not perfectly straight or diagonal
         # manually fix it
-        if (motorSteps[0] - motorSteps[1]) > 0.1 * Coordinate.getSize():
-            if (motorSteps[0]< motorSteps[1]):
+        if abs(motorSteps[0] - motorSteps[1]) > 0.1 * Coordinate.getSize():
+            if (abs(motorSteps[0])< abs(motorSteps[1])):
                 motorSteps[0] = 0
             else:
                 motorSteps[1] = 0
         
         # figure out what direction to have the motors go
-        
+        print(motorSteps)
         # left motor is not moving
         if (motorSteps[0] == 0):
             # if the right motor value is positive
