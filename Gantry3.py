@@ -52,8 +52,10 @@ class Gantry3():
         
         # figure out what direction to have the motors go
         print("After correction: ", motorSteps)
+        
         # left motor is not moving
         if (motorSteps[0] == 0):
+            print("Only the left motor is moving")
             # if the right motor value is positive
             if motorSteps[1] > 0:
                 self.Motor2.start('forward')
@@ -67,7 +69,7 @@ class Gantry3():
             
         # right motor is not moving
         elif motorSteps[1] == 0:
-            
+            print("Only the right motor is moving")
             if motorSteps[0] > 0:
                 self.Motor1.start('forward')
             else:
@@ -78,6 +80,7 @@ class Gantry3():
         # both motors are moving and the values are the same
         # figure out the directions and get them started
         else:
+            print("Both motors are moving")
             # left motor moving forward
             if motorSteps[0] > 0:
                 # right motor moving forward
@@ -99,6 +102,7 @@ class Gantry3():
             
             # run them at the same time using multiprocessing
             motorSteps = [abs(i) for i in motorSteps]
+            print("absolute value version: ", motorSteps)
             x = Process(target = self.Motor1.control, args=(motorSteps[0],))
             y = Process(target = self.Motor2.control, args=(motorSteps[1],))
         
