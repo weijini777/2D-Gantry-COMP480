@@ -62,6 +62,9 @@ class Gantry3():
             # turn the motor
             self.Motor2.setStepDelay(0.0005)
             self.Motor2.control(motorSteps[1])
+            # make sure to stop it after it is done running
+            self.Motor2.stop()
+            
         # right motor is not moving
         elif motorSteps[1] == 0:
             
@@ -71,10 +74,12 @@ class Gantry3():
                 self.Motor2.start('backward')
             self.Motor2.setStepDelay(0.0005)
             self.Motor1.control(motorSteps[0])
+            self.Motor1.stop()
         # both motors are moving and the values are the same
+        # figure out the directions and get them started
         else:
             # left motor moving forward
-            if(motorSteps[0] > 0):
+            if motorSteps[0] > 0:
                 # right motor moving forward
                 if motorSteps[1] > 0:
                     self.Motor2.start('forward')
@@ -83,7 +88,7 @@ class Gantry3():
                 self.Motor1.start('forward')
             # left motor is moving backward
             else:
-                if motorSteps[0] > 0:
+                if motorSteps[1] > 0:
                     self.Motor2.start('forward')
                 else:
                     self.Motor2.start('backward')
@@ -91,9 +96,21 @@ class Gantry3():
             # set step delay
             self.Motor1.setStepDelay(0.001)
             self.Motor2.setStepDelay(0.001)
-            self.Motor1.control(motorSteps[0])
-            self.Motor2.control(motorSteps[1])
+            
+            # run them at the same time using multiprocessing
+            motorSteps = [abs(i) for i in motorSteps]
+            x = Process(target = self.Motor1.control, args=(motorSteps[0],))
+            y = Process(target = self.Motor2.control, args=(motorSteps[1],))
         
+            x.start()
+            y.start()
+        
+            x.join()
+            y.join()
+            
+            
+            Motor1.stop()
+            Motor2.stop()
         # -------------------------------------------------------------------
         # METHOD 1, the problem is that it is still giving very rough motion
         # motor1MoreSteps = motorRatio >= 1
