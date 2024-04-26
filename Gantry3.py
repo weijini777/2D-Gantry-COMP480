@@ -44,7 +44,7 @@ class Gantry3():
         
         # it is not perfectly straight or diagonal
         # manually fix it
-        if abs(motorSteps[0] - motorSteps[1]) > 0.1 * Coordinate.getSize():
+        if abs(motorSteps[0] - motorSteps[1]) > 0.1 * self.Coordinate.getSize():
             if (abs(motorSteps[0])< abs(motorSteps[1])):
                 motorSteps[0] = 0
             else:

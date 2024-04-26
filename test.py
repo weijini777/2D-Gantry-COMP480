@@ -1,39 +1,34 @@
 import gpiozero as GPIO
 import time
 from HR8825zero import HR8825zero
-from Gantry import Gantry
+from Gantry3 import Gantry3
+from Coordinate import Coordinate
 
 Motor1 = HR8825zero(dir_pin=13, step_pin=19, enable_pin=12)
 Motor2 = HR8825zero(dir_pin=24, step_pin=18, enable_pin=4)
-Gantry = Gantry(Motor1, Motor2)
-
+coord = Coordinate(500)
+Gantry = Gantry3(Motor1, Motor2, coord)
 # test out the gantry class
-Gantry.forward(50)
+center = [100,100]
+forward = [100,150]
+backward = [100,50]
+left = [50, 100]
+right = [100, 150]
+
+Gantry.travel(center, forward)
 Gantry.stop()
-print('just went forward 50 mm')
-time.sleep(0.5)
-Gantry.backward(50)
+time.sleep(1)
+
+Gantry.travel(center, backward)
 Gantry.stop()
-print('just went backward 50 mm')
-time.sleep(0.5)
-Gantry.left(30)
+time.sleep(1)
+
+Gantry.travel(center, left)
 Gantry.stop()
-print('just went left 30 mm')
-time.sleep(0.5)
-Gantry.right(30)
+time.sleep(1)
+
+Gantry.travel(center, right)
 Gantry.stop()
-print('just went right 30 mm')
-time.sleep(0.5)
-Gantry.diagNW(50)
-Gantry.stop()
-time.sleep(0.5)
-Gantry.diagSW(50)
-Gantry.stop()
-time.sleep(0.5)
-Gantry.diagNE(50)
-Gantry.stop()
-time.sleep(0.5)
-Gantry.diagSE(50)
-Gantry.stop()
-    
+time.sleep(1)
+
 exit()

@@ -8,3 +8,4 @@ coord = Coordinate(200)
 Gantry = Gantry3(Motor1, Motor2, coord)
 
 Gantry.stop()
+exit()
