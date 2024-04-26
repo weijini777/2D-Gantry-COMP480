@@ -12,16 +12,12 @@ class HR8825zero():
         self.dirDevice = GPIO.OutputDevice(pin = dir_pin)
         self.stepDevice = GPIO.OutputDevice(pin = step_pin)
         self.enableDevice = GPIO.OutputDevice(pin = enable_pin)
-        # keeps track of the steps
-        self.stepCount = 0
         self.stepDelay = 0.001
 
 
     def stop(self):
         # when enable device is high, it disables the motor
         self.enableDevice.off()
-        # reset the counts
-        self.stepCount = 0
     
         
     def start(self, Dir):
@@ -38,7 +34,7 @@ class HR8825zero():
     
     # controls the movement of the motors
     def control(self, steps):
-        while self.stepCount < steps:
+        for i in range(steps):
             self.stepDevice.value = True
             time.sleep(self.stepDelay)
             self.stepDevice.value = False
