@@ -6,7 +6,7 @@ from Coordinate import Coordinate
 
 Motor1 = HR8825zero(dir_pin=13, step_pin=19, enable_pin=12)
 Motor2 = HR8825zero(dir_pin=24, step_pin=18, enable_pin=4)
-coordinate = Coordinate(400)
+coordinate = Coordinate(300)
 Gantry = Gantry3(Motor1, Motor2, coordinate)
 
 # define all of the points 
@@ -31,6 +31,7 @@ sequence = [[a,e1], [e1,h4], [h4,h3], [h3,f1], [f1,b2], [d,h1], [h1,h2], [h2,e2]
 
 for i in sequence:
     Gantry.travel(i[0],i[1])
+    time.sleep(0.7)
     Gantry.stop()
     
 exit()
