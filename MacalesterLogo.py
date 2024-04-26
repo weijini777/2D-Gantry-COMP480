@@ -31,7 +31,8 @@ sequence = [[a,e1], [e1,h4], [h4,h3], [h3,f1], [f1,b2], [d,h1], [h1,h2], [h2,e2]
 
 for i in sequence:
     Gantry.travel(i[0],i[1])
-    time.sleep(0.7)
     Gantry.stop()
+    time.sleep(2)
+    
     
 exit()
