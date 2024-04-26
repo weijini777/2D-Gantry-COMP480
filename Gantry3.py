@@ -38,6 +38,10 @@ class Gantry3():
             start ([x1, y1]) : the starting location
             end ([x2,y2]) : the ending location
         """
+        
+        # make the corrections to the dimensions here
+        diff = (end - start)
+        print(diff)        
         motorSteps = self.Coordinate.move(start, end)
         print("Before correction: ", motorSteps)
         # hard code the different directions to force only 5 types of movement
@@ -102,19 +106,16 @@ class Gantry3():
             
             # run them at the same time using multiprocessing
             motorSteps = [abs(i) for i in motorSteps]
-            print("absolute value version: ", motorSteps)
             x = Process(target = self.Motor1.control, args=(motorSteps[0],))
             y = Process(target = self.Motor2.control, args=(motorSteps[1],))
         
             x.start()
             y.start()
             
-            print("are the processes started?")
         
             x.join()
             y.join()
             
-            print("does it get here")
             self.Motor1.stop()
             self.Motor2.stop()
         # -------------------------------------------------------------------
