@@ -6,7 +6,7 @@ from Coordinate import Coordinate
 
 Motor1 = HR8825zero(dir_pin=13, step_pin=19, enable_pin=12)
 Motor2 = HR8825zero(dir_pin=24, step_pin=18, enable_pin=4)
-coord = Coordinate(500)
+coord = Coordinate(150)
 Gantry = Gantry3(Motor1, Motor2, coord)
 # test out the gantry class
 center = [100,100]
