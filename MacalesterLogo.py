@@ -38,9 +38,9 @@ logo = [a, e1, f1, b2, g1, f1, g2, d, j1, g2, h1, j2, i, g1, j3, i, h1, j4, h1, 
 for i in range(len(logo)-1):
     start = [x * scaleFactor1 for x in logo[i]]
     end = [x * scaleFactor1 for x in logo[i+1]]
-    Gantry.travel(start,end)
-    Gantry.stop()
-    time.sleep(0.1)
+    #Gantry.travel(start,end)
+    #Gantry.stop()
+    #time.sleep(0.1)
     
 # 150 years
         # all of the numbers
@@ -49,9 +49,12 @@ text = [[0,3],[1,4],[1,0],[0,0],[2,0],[1,0],[3,2],[3,4],[5,4],[3,4],[3,2],[5,2],
         [15,0],[15,2],[13,4],[15,2],[17,4],[20,4],[17,4],[17,2],[19,2],[17,2],[17,0],[21,0],[21,4],[23.5,4],[23.5,2],[21,2],[23.5,2],[23.5,0],
         # RS
         [24.5,0],[24.5,4],[26.5,4],[26.5,2],[24.5,2],[26.5,2],[29.5,0],[29.5,2],[27.5,2],[27.5,4],[29.5,4]]  
-scaleFactor2 = 7.5
+scaleFactor2 = 6
 for i in range(len(text)-1):
     start = [x * scaleFactor2 for x in text[i]]
     end = [x * scaleFactor2 for x in text[i+1]]
+    Gantry.travel(start,end)
+    Gantry.stop()
+    time.sleep(0.1)
 
 exit()
