@@ -6,11 +6,11 @@ from Coordinate import Coordinate
 
 Motor2 = HR8825zero(dir_pin=13, step_pin=19, enable_pin=12)
 Motor1 = HR8825zero(dir_pin=24, step_pin=18, enable_pin=4)
-coordinate = Coordinate(400)
+coordinate = Coordinate(800)
 Gantry = Gantry3(Motor1, Motor2, coordinate)
 
 # scale factor = 9
-scaleFactor1 = 18
+scaleFactor = 36
 a = [9.012,0] 
 b1 = (4.46,2.069)
 b2 = (11.463,2.069)
@@ -37,8 +37,8 @@ j4 = (11.463,20.354)
 logo = [a, e1, f1, b2, g1, f1, g2, d, j1, g2, 
         h1, j2, i, g1, j3, i, h1, j4, h1, g3, c, h2, g3, f2, b1, g4, f2, e2]
 for i in range(len(logo)-1):
-    start = [x * scaleFactor1 for x in logo[i]]
-    end = [x * scaleFactor1 for x in logo[i+1]]
+    start = [x * scaleFactor for x in logo[i]]
+    end = [x * scaleFactor for x in logo[i+1]]
     Gantry.travel(start,end)
     Gantry.stop()
     time.sleep(0.1)
