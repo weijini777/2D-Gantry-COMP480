@@ -10,7 +10,7 @@ coordinate = Coordinate(200)
 Gantry = Gantry3(Motor1, Motor2, coordinate)
 
 # define all of the points 
-scalingFactor = 7
+scalingFactor = 9
 a = [9.012* scalingFactor,0] 
 b1 = (4.46* scalingFactor, 2.069* scalingFactor)
 b2 = (11.463* scalingFactor,2.069* scalingFactor)
