@@ -31,6 +31,7 @@ class Coordinate:
         self.length = 1500
         self.stepSize = "half-step"
     
+    
     def getSize(self) -> int:
         """
         returns the size of our coordinate system
@@ -51,6 +52,9 @@ class Coordinate:
             self.length = self.length * 2
         if stepSize == "1/8-step":
             self.length = self.length * 4
+    
+    def setLength(self, length) -> None:
+        self.length = length
     
     def move(self, start, end) -> list:
         """

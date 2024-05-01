@@ -6,7 +6,8 @@ from Coordinate import Coordinate
 
 Motor2 = HR8825zero(dir_pin=13, step_pin=19, enable_pin=12)
 Motor1 = HR8825zero(dir_pin=24, step_pin=18, enable_pin=4)
-coordinate = Coordinate(200)
+coordinate = Coordinate(400)
+coordinate.setLength(2000)
 Gantry = Gantry3(Motor1, Motor2, coordinate)
 
 # 150 years
@@ -16,7 +17,7 @@ text = [[0,3],[1,4],[1,0],[0,0],[2,0],[1,0],[3,2],[3,4],[5,4],[3,4],[3,2],[5,2],
         [15,0],[15,2],[13,4],[15,2],[17,4],[20,4],[17,4],[17,2],[19,2],[17,2],[17,0],[21,0],[21,4],[23.5,4],[23.5,2],[21,2],[23.5,2],[23.5,0],
         # RS
         [24.5,0],[24.5,4],[26.5,4],[26.5,2],[24.5,2],[26.5,0],[29.5,0],[29.5,2],[27.5,2],[27.5,4],[29.5,4]]  
-scaleFactor2 = 6
+scaleFactor2 = 12
 for i in range(len(text)-1):
     start = [x * scaleFactor2 for x in text[i]]
     end = [x * scaleFactor2 for x in text[i+1]]
