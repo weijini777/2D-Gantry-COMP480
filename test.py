@@ -1,14 +1,12 @@
-import gpiozero as GPIO
 import time
 from HR8825zero import HR8825zero
-from Gantry3 import Gantry3
+from GantryLite import GantryLite
 from Coordinate import Coordinate
-# coordinate is size of 300, and the coordinates of about 100 apart
 
 Motor2 = HR8825zero(dir_pin=13, step_pin=19, enable_pin=12)
 Motor1 = HR8825zero(dir_pin=24, step_pin=18, enable_pin=4)
 coord = Coordinate(300)
-Gantry = Gantry3(Motor1, Motor2, coord)
+Gantry = GantryLite(Motor1, Motor2, coord)
 # test out the gantry class
 center = [100, 100]
 forward = [100,299]
@@ -39,8 +37,6 @@ time.sleep(0.5)
 Gantry.travel(center, forward)
 Gantry.stop()
 time.sleep(1)
-
-print("Does it make it past the first chain of tests")
 
 Gantry.travel(center, backward)
 Gantry.stop()

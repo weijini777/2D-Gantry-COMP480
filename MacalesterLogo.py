@@ -1,15 +1,13 @@
-import gpiozero as GPIO
 import time
 from HR8825zero import HR8825zero
-from Gantry3 import Gantry3
+from GantryLite import GantryLite
 from Coordinate import Coordinate
 
-Motor2 = HR8825zero(dir_pin=13, step_pin=19, enable_pin=12)
 Motor1 = HR8825zero(dir_pin=24, step_pin=18, enable_pin=4)
+Motor2 = HR8825zero(dir_pin=13, step_pin=19, enable_pin=12)
 coordinate = Coordinate(800)
-Gantry = Gantry3(Motor1, Motor2, coordinate)
+Gantry = GantryLite(Motor1, Motor2, coordinate)
 
-# scale factor = 9
 scaleFactor = 36
 a = [9.012,0] 
 b1 = (4.46,2.069)
@@ -31,7 +29,6 @@ j1 = (0,20.354)
 j2 = (4.46,20.354)
 j3 = (6.854,20.354)
 j4 = (11.463,20.354)
-
 
 # macalester logo
 logo = [a, e1, f1, b2, g1, f1, g2, d, j1, g2, 

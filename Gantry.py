@@ -1,86 +1,84 @@
 from HR8825zero import HR8825zero
-""" Gantry movement class based on distance"""
+from Coordinate import Coordinate
+import time
+from multiprocessing import Process
+
 class Gantry():
-    def __init__(self, Motor1, Motor2):
+    """
+    This class utlizes coordinate based movement
+    works in tandem with the Coordinate class, moves between
+    any two (x,y) points in a straight line fashion
+    
+    ...
+    
+    Attributes:
+    -----------
+    Motor1 : HR8825zero
+        The first stepper motor controlled by the motor hat
+        motor on the left side
+    Motor2 : HR8825zero
+        The second stepper motor controlled by the motor hat
+        motor on the right side
+    Coordinate: Coordinate
+        A coordinate system that we can tweak and manipulate
+    """
+    def __init__(self, Motor1, Motor2, Coordinate):
+        """ constructor for the Gantry that includes all of its attributes
+        """
         self.Motor1 = Motor1
         self.Motor2 = Motor2
-        # this is the distance that the carriage travels per half step
-        self.halfStepDistance = 0.08975
+        self.Coordinate = Coordinate
 
-    # moves carriage forward without left and right movement
-    # distance in mm
-    def forward(self, distance):
-        # number of half steps that is required
-        self.Motor1.setStepDelay(0.001)
-        self.Motor2.setStepDelay(0.001)
-        steps = distance // self.halfStepDistance
-        self.Motor1.start('forward')
-        self.Motor2.start('backward')
-        while self.Motor1.stepCount < steps:
-            self.Motor1.control()
-            self.Motor2.control()
-    
-    # moves carriage backward without left and right movement
-    # specify the number of steps, has to be an even number
-    def backward(self, distance):
-        self.Motor1.setStepDelay(0.001)
-        self.Motor2.setStepDelay(0.001)
-        steps = distance // self.halfStepDistance
-        self.Motor1.start('backward')
-        self.Motor2.start('forward')
-        while self.Motor1.stepCount < steps:
-            self.Motor1.control()
-            self.Motor2.control()
+    def travel(self, start, end) -> None:
+        """ moves the motor from one location to another in a straight line
+
+        Args:
+            start ([x1, y1]) : the starting location
+            end ([x2,y2]) : the ending location
+        """
+        motorSteps = self.Coordinate.move(start, end)
         
-    def left(self, distance):
-        self.Motor1.setStepDelay(0.001)
-        self.Motor2.setStepDelay(0.001)
-        steps = distance // self.halfStepDistance
-        self.Motor1.start('forward')
-        self.Motor2.start('forward')
-        while self.Motor1.stepCount < steps:
-            self.Motor1.control()
-            self.Motor2.control()
+        if motorSteps[1] != 0:
+            # motor 1 steps / motor 2 steps
+            motorRatio = abs(motorSteps[0]) /abs(motorSteps[1])
+            # motor 2 steps / motor 1 steps
+        elif motorSteps[0] != 0:
+            motorRatio = abs(motorSteps[1])/abs(motorSteps[0])
+        else: # both are 0
+            return
             
-    def right(self, distance):
-        self.Motor1.setStepDelay(0.001)
-        self.Motor2.setStepDelay(0.001)
-        steps = distance // self.halfStepDistance
-        self.Motor1.start('backward')
-        self.Motor2.start('backward')
-        while self.Motor1.stepCount < steps:
-            self.Motor1.control()
-            self.Motor2.control()
-    
-    def diagNW(self, distance):
-        self.Motor1.setStepDelay(0.0005)
-        steps = distance // self.halfStepDistance
-        self.Motor1.start('forward')
-        while self.Motor1.stepCount < steps:
-            self.Motor1.control()
-    
-    def diagSE(self, distance):
-        self.Motor1.setStepDelay(0.0005)
-        steps = distance // self.halfStepDistance
-        self.Motor1.start('backward')
-        while self.Motor1.stepCount < steps:
-            self.Motor1.control()
-            
-    def diagNE(self, distance):
-        self.Motor2.setStepDelay(0.0005)
-        steps = distance // self.halfStepDistance
-        self.Motor2.start('backward')
-        while self.Motor2.stepCount < steps:
-            self.Motor2.control()
+        # update step delay based on ratio of steps 
+        if motorRatio >= 1:
+            self.Motor1.setStepDelay(0.001)
+            self.Motor2.setStepDelay(0.001 * motorRatio)
+        else:
+            self.Motor1.setStepDelay(0.001 / motorRatio)
+            self.Motor2.setStepDelay(0.001)
         
-    def diagSW(self, distance):
-        self.Motor2.setStepDelay(0.0005)
-        steps = distance // self.halfStepDistance
-        self.Motor2.start('forward')
-        while self.Motor2.stepCount < steps:
-            self.Motor2.control()
+        # set the direction of the movement
+        if motorSteps[0] < 0:
+            self.Motor1.start('forward')
+        else:
+            self.Motor1.start('backward')
+        if motorSteps[1] < 0:
+            self.Motor2.start('forward')
+        else:
+            self.Motor2.start('backward')
+        
+        # run the motors at the same time using multiprocessing
+        motorSteps = [abs(i) for i in motorSteps]
+        x = Process(target = self.Motor1.control, args=(motorSteps[0],))
+        y = Process(target = self.Motor2.control, args=(motorSteps[1],))
+        
+        x.start()
+        y.start()
+        
+        x.join()
+        y.join()
     
     # stops all the motors
-    def stop(self):
+    def stop(self) -> None:
+        """ stops all the motors
+        """
         self.Motor1.stop()
         self.Motor2.stop()

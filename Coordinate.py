@@ -15,12 +15,6 @@ class Coordinate:
         how long our x and y axis are, can be units of steps
     stepSize : str
         The kind of stepping we will be using, the default is half-stepping, the length is based on stepSize
-    
-    Methods:
-    --------
-    move(point1, point2) : list[x-projection, y-projection]
-        returns the x and y component that our motors need to move to arrive at our destination
-        this accomodates for our coreXY navigation system
     """
     
     def __init__(self, size):
@@ -54,12 +48,18 @@ class Coordinate:
             self.length = self.length * 4
     
     def setLength(self, length) -> None:
+        """ change the length of our Gantry,
+        the longer the length, the longer the x,y axis
+
+        Args:
+            length (int): the total number of steps in one direction
+        """
         self.length = length
     
     def move(self, start, end) -> list:
         """
         This function returns the x and y vectors needed to move from one point to another
-        This takes into account coreXY coordinate transformation
+        This takes into account core XY coordinate transformation
 
         Args:
             start ([x1,y1]): the x and y coordinate values of the starting point
@@ -75,21 +75,13 @@ class Coordinate:
         start = np.array(start)
         end = np.array(end)
         path = end - start
-        
         # transform path using the rotational matrix
         theta = math.pi / 4
         rotMat = np.array([[math.cos(theta), -1 * math.sin(theta)],
                            [math.sin(theta), math.cos(theta)]])
         newPath = np.dot(rotMat, path)
-        
         stepsPerUnit = self.length / self.size
         newPath = newPath * stepsPerUnit
         newPath = newPath.astype(int)
         # we want the normal list version so we don't need numpy when dealing with the motors
         return newPath.tolist()
-    
-if __name__ == "__main__":
-    coord = Coordinate(1000)
-    start = [5,5]
-    end = [0,0]
-    print(coord.move(start, end))
